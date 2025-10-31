@@ -20,6 +20,7 @@ A **Streamlit web app** that lets you compare the performance of three powerful 
 
 ## Folder Structure
 
+```
 📦 CNN-ObjectDetection-App
 ┣ 📂 models
 ┃ ┣ yolo_v3.py
@@ -37,7 +38,7 @@ A **Streamlit web app** that lets you compare the performance of three powerful 
 ┣ 📜 coco_labels.txt
 ┣ 📜 requirements.txt
 ┣ 📜 README.md
-
+```
 
 ---
 
