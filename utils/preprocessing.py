@@ -1,8 +1,11 @@
 import os
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 
+# --- Safe OpenCV import ---
 try:
     import cv2
+    OPENCV_AVAILABLE = True
+    print(f"✅ OpenCV loaded successfully: {cv2.__version__}")
 except Exception as e:
     print(f"[WARNING] OpenCV failed to load: {e}")
     import types
@@ -10,6 +13,7 @@ except Exception as e:
     for fn in ["imread", "imwrite", "resize", "imshow", "cvtColor"]:
         setattr(cv2, fn, lambda *a, **k: None)
     cv2.IMREAD_COLOR = 1
+    OPENCV_AVAILABLE = False
 
 import numpy as np
 from PIL import Image
