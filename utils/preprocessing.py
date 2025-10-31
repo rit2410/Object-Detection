@@ -1,11 +1,15 @@
+import sys
 try:
     import cv2
 except Exception as e:
-    import sys
     print(f"[WARNING] OpenCV failed to load: {e}")
-    sys.modules["cv2"] = __import__("types").SimpleNamespace(
-        imread=None, resize=None, imwrite=None
-    )
+    import types
+    cv2 = types.SimpleNamespace()
+    cv2.imread = lambda *args, **kwargs: None
+    cv2.resize = lambda *args, **kwargs: None
+    cv2.imwrite = lambda *args, **kwargs: None
+    cv2.cvtColor = lambda *args, **kwargs: None
+    cv2.IMREAD_COLOR = 1
 
 import numpy as np
 from PIL import Image
