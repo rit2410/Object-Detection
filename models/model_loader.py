@@ -6,12 +6,9 @@ Supported models: YOLOv3, YOLOv8, RT-DETR
 """
 
 import torch
-from models.yolo_v3 import load_model as load_yolo_v3, detect as detect_yolo_v3
-from models.yolo_v8 import load_model as load_yolo_v8, detect as detect_yolo_v8
-from models.rt_detr import load_model as load_rt_detr, detect as detect_rt_detr
-
-
 import streamlit as st
+
+# Import model wrappers
 from models.yolo_v3 import load_model as load_yolo_v3, detect as detect_yolo_v3
 from models.yolo_v8 import load_model as load_yolo_v8, detect as detect_yolo_v8
 from models.rt_detr import load_model as load_rt_detr, detect as detect_rt_detr
