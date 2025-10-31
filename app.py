@@ -10,13 +10,14 @@ import torch
 import streamlit as st
 from PIL import Image
 import time
-
-import os
-os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"  # Disable multimedia backends
 from models.model_loader import load_selected_model, run_inference
 from utils.preprocessing import load_image
 from utils.visualization import show_results
 from utils.metrics import measure_inference_time, display_metrics_table
+
+import os
+os.environ["QT_QPA_PLATFORM"] = "offscreen"  # avoid GUI dependencies
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
 
 
 # ---------------------------
