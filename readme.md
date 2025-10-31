@@ -42,20 +42,23 @@ A **Streamlit web app** that lets you compare the performance of three powerful 
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
-### 1️⃣ Clone the Repository
+1. Clone the Repository
 ```bash
 git clone https://github.com/<your-username>/CNN-ObjectDetection-App.git
 cd CNN-ObjectDetection-App
+```
 
-2️⃣ Create a Virtual Environment
+2. Create a Virtual Environment
 python3 -m venv venv
 source venv/bin/activate  # for macOS/Linux
 venv\Scripts\activate     # for Windows
-3️⃣ Install Dependencies
+
+3.Install Dependencies
 pip install -r requirements.txt
-4️⃣ Run the App
+
+4. Run the App
 streamlit run app.py
 Then open the provided local URL (e.g. http://localhost:8501) in your browser.
 
