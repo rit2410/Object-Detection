@@ -5,6 +5,9 @@ Streamlit app for multi-model object detection comparison.
 Supports YOLOv3, YOLOv8, and RT-DETR with side-by-side visualization.
 Includes detailed debug logs for first-time loading.
 """
+import cv2
+import streamlit as st
+st.write("✅ OpenCV loaded successfully:", cv2.__version__)
 
 import torch
 import streamlit as st
