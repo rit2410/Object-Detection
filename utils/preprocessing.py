@@ -1,15 +1,11 @@
-import os
-os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
-os.environ["OPENCV_LOG_LEVEL"] = "ERROR"
-
-# Try importing OpenCV
 try:
     import cv2
-    OPENCV_AVAILABLE = True
 except Exception as e:
-    print(f"⚠️ OpenCV failed to load: {e}")
-    cv2 = None
-    OPENCV_AVAILABLE = False
+    import sys
+    print(f"[WARNING] OpenCV failed to load: {e}")
+    sys.modules["cv2"] = __import__("types").SimpleNamespace(
+        imread=None, resize=None, imwrite=None
+    )
 
 import numpy as np
 from PIL import Image
