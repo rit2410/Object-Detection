@@ -1,88 +1,46 @@
-"""
-Preprocessing utilities for object detection app.
-Handles image loading, resizing, normalization, and tensor conversion
-to ensure compatibility across YOLOv3, YOLOv8, and RT-DETR models.
-"""
 import os
 os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
 os.environ["OPENCV_LOG_LEVEL"] = "ERROR"
 
+# Try importing OpenCV
 try:
     import cv2
+    OPENCV_AVAILABLE = True
 except Exception as e:
-    raise ImportError(f"OpenCV failed to load properly: {e}")
+    print(f"⚠️ OpenCV failed to load: {e}")
+    cv2 = None
+    OPENCV_AVAILABLE = False
 
-import torch
 import numpy as np
 from PIL import Image
+import torch
 
-# ---------------------------
-# 1. Load image (OpenCV / PIL)
-# ---------------------------
-def load_image(image_source):
+
+def load_image(image):
+    """Convert PIL Image to NumPy array."""
+    return np.array(image)
+
+
+def preprocess_torch(image, device, img_size=(640, 640)):
     """
-    Loads an image from file path or PIL object and converts to RGB numpy array.
+    Convert PIL image to a normalized Torch tensor.
+    Falls back to Pillow resize if OpenCV is not available.
     """
-    if isinstance(image_source, Image.Image):
-        image = np.array(image_source.convert("RGB"))
+    image = np.array(image)
+
+    if OPENCV_AVAILABLE:
+        try:
+            image = cv2.resize(image, img_size)
+            image = image[:, :, ::-1].transpose(2, 0, 1)  # BGR → RGB
+        except Exception as e:
+            print(f"⚠️ OpenCV resize failed: {e}, falling back to Pillow.")
+            image = Image.fromarray(image).resize(img_size)
+            image = np.array(image).transpose(2, 0, 1)
     else:
-        image = cv2.imread(image_source)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = Image.fromarray(image).resize(img_size)
+        image = np.array(image).transpose(2, 0, 1)
+
+    image = np.ascontiguousarray(image)
+    image = torch.from_numpy(image).float() / 255.0
+    image = image.unsqueeze(0).to(device)
     return image
-
-
-# ---------------------------
-# 2. Preprocess for YOLOv3 / RT-DETR (PyTorch models)
-# ---------------------------
-def preprocess_torch(image, device, size=640):
-    """
-    Prepares an image for PyTorch-based detectors (YOLOv3, RT-DETR).
-    - Resize to square
-    - Normalize to [0,1]
-    - Convert to CHW tensor
-    """
-    # Resize
-    resized = cv2.resize(image, (size, size))
-    # Normalize
-    normalized = resized / 255.0
-    # Convert HWC → CHW
-    chw = np.transpose(normalized, (2, 0, 1))
-    # Convert to tensor
-    tensor = torch.tensor(chw, dtype=torch.float32).unsqueeze(0).to(device)
-    return tensor
-
-
-# ---------------------------
-# 3. Preprocess for YOLOv8 (Ultralytics handles it internally)
-# ---------------------------
-def preprocess_yolov8(image_path_or_pil):
-    """
-    YOLOv8 handles preprocessing internally during .predict().
-    This function just ensures we provide a valid input path or PIL image.
-    """
-    if isinstance(image_path_or_pil, str):
-        return image_path_or_pil  # image path
-    elif isinstance(image_path_or_pil, Image.Image):
-        return image_path_or_pil  # PIL image is accepted
-    else:
-        raise ValueError("Invalid input type for YOLOv8 preprocessing.")
-
-
-# ---------------------------
-# 4. Optional: Video frame extraction (for future use)
-# ---------------------------
-def extract_frames(video_path, skip_frames=5):
-    """
-    Generator function to read frames from a video file.
-    Yields every nth frame (based on skip_frames) in RGB format.
-    """
-    cap = cv2.VideoCapture(video_path)
-    frame_count = 0
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        if frame_count % skip_frames == 0:
-            yield cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_count += 1
-    cap.release()
