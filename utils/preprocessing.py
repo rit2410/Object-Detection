@@ -1,14 +1,14 @@
-import sys
+import os
+os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
 try:
     import cv2
 except Exception as e:
     print(f"[WARNING] OpenCV failed to load: {e}")
     import types
     cv2 = types.SimpleNamespace()
-    cv2.imread = lambda *args, **kwargs: None
-    cv2.resize = lambda *args, **kwargs: None
-    cv2.imwrite = lambda *args, **kwargs: None
-    cv2.cvtColor = lambda *args, **kwargs: None
+    for fn in ["imread", "imwrite", "resize", "imshow", "cvtColor"]:
+        setattr(cv2, fn, lambda *a, **k: None)
     cv2.IMREAD_COLOR = 1
 
 import numpy as np
