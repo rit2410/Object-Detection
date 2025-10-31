@@ -6,7 +6,7 @@ Transformer-based object detector.
 """
 
 from ultralytics import RTDETR
-from utils.preprocessing import preprocess_yolov8  # same preprocessing as YOLOv8
+from utils.preprocessing import preprocess_yolov8
 
 def load_model(model_variant="rtdetr-l.pt"):
     """
