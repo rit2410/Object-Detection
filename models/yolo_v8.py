@@ -1,11 +1,7 @@
-"""
-yolo_v8.py
------------
-Object detection using Ultralytics YOLOv8.
-"""
-
 from ultralytics import YOLO
+import cv2
 from utils.preprocessing import preprocess_yolov8
+
 
 def load_model(model_variant="runs/detect/train/weights/best.pt"):
     from ultralytics import YOLO
