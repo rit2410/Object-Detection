@@ -15,6 +15,13 @@ import numpy as np
 from PIL import Image
 import torch
 
+def preprocess_yolov8(image_path):
+    """
+    Load and preprocess an image for YOLOv8/RT-DETR inference.
+    Returns the same path (YOLOv8 handles preprocessing internally).
+    """
+    return image_path
+
 
 def load_image(image):
     """Convert PIL Image to NumPy array."""
