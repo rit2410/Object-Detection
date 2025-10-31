@@ -6,12 +6,13 @@ Supports YOLOv3, YOLOv8, and RT-DETR with side-by-side visualization.
 Includes detailed debug logs for first-time loading.
 """
 
-import os
 import torch
 import streamlit as st
 from PIL import Image
 import time
 
+import os
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"  # Disable multimedia backends
 from models.model_loader import load_selected_model, run_inference
 from utils.preprocessing import load_image
 from utils.visualization import show_results
