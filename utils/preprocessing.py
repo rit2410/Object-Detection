@@ -3,14 +3,18 @@ Preprocessing utilities for object detection app.
 Handles image loading, resizing, normalization, and tensor conversion
 to ensure compatibility across YOLOv3, YOLOv8, and RT-DETR models.
 """
+import os
+os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
+os.environ["OPENCV_LOG_LEVEL"] = "ERROR"
+
+try:
+    import cv2
+except Exception as e:
+    raise ImportError(f"OpenCV failed to load properly: {e}")
 
 import torch
-import cv2
 import numpy as np
 from PIL import Image
-import os
-os.environ["OPENCV_LOG_LEVEL"] = "ERROR"
-import cv2
 
 # ---------------------------
 # 1. Load image (OpenCV / PIL)
