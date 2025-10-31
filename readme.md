@@ -51,12 +51,17 @@ cd CNN-ObjectDetection-App
 ```
 
 2. Create a Virtual Environment
+
+```bash
 python3 -m venv venv
 source venv/bin/activate  # for macOS/Linux
 venv\Scripts\activate     # for Windows
+```
 
 3.Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
 4. Run the App
 streamlit run app.py
