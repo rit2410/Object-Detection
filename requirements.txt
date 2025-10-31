@@ -1,0 +1,16 @@
+# requirements_cpu.txt (final)
+torch==2.2.0
+torchvision==0.17.0
+torchaudio==2.2.0
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+numpy>=1.24.0
+pandas>=2.0.0
+opencv-python-headless>=4.8.0.76
+Pillow>=10.0.0
+matplotlib>=3.8.0
+streamlit>=1.31.0
+
+ultralytics>=8.2.0,<9.0.0  # includes YOLOv8 and RT-DETR
+tqdm>=4.66.0
+seaborn>=0.13.0
